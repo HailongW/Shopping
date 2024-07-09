@@ -1,9 +1,15 @@
+//导入页面路由模块
+import router from '@ohos.router';
+import { url } from '@kit.ArkTS';
+
+
 @Entry
 @Component
 struct Login {
   @State message: string = '欢迎登录';
   @State user: string = '';
   @State password: string = '';
+  private otherData: Array<string> = ['微信', 'QQ', '手机']
 
   build() {
     Row() {
@@ -17,20 +23,14 @@ struct Login {
           .fontSize('30fp')
           .fontWeight(FontWeight.Bold)
         TextInput({ placeholder: '请输入用户名' })
-          .placeholderColor('0x999999')
-          .maxLength(6)
-          .padding('12vp')
-          .margin('10vp')
+          .inputStyle()
           .onChange(data => {
             this.user = data
             console.info('user: ' + data)
           })
         TextInput({ placeholder: '请输入密码' })
           .type(InputType.Password)
-          .placeholderColor('0x999999')
-          .maxLength(6)
-          .padding('12vp')
-          .margin('10vp')
+          .inputStyle()
           .onChange(data => {
             this.password = data
             console.info('pwd: ' + data)
@@ -50,7 +50,11 @@ struct Login {
           .width('90%')
           .margin({ top: '20vp' })
           .onClick(() => {
-            //具体逻辑
+            //路由跳转
+            router.pushUrl({ url: 'pages/MainPage' }).catch((error: Error) => {
+              //错误提示
+            }
+            )
           })
 
         Row() {
@@ -63,15 +67,10 @@ struct Login {
         .margin({ top: '20vp' })
 
         Row() {
-          Button('微信', { type: ButtonType.Circle, stateEffect: true })
-            .width('80vp')
-            .height('80vp')
-          Button('QQ', { type: ButtonType.Circle, stateEffect: true })
-            .width('80vp')
-            .height('80vp')
-          Button('手机', { type: ButtonType.Circle, stateEffect: true })
-            .width('80vp')
-            .height('80vp')
+          ForEach(this.otherData, (item: string) => {
+            Button(item, { type: ButtonType.Circle, stateEffect: true })
+              .btnWithStyle()
+          }, (item: string) => JSON.stringify(item))
         }
         .width('100%')
         .justifyContent(FlexAlign.SpaceAround)
@@ -82,4 +81,21 @@ struct Login {
     }
     .height('100%')
   }
+}
+
+//添加公共的样式函数
+//@Extend 装饰器 :扩展组件样式
+//@Extend(组件描述名称)function 样式名称(){}
+@Extend(TextInput)
+function inputStyle() {
+  .placeholderColor('0x999999')
+  .maxLength(6)
+  .padding('12vp')
+  .margin('10vp')
+}
+
+@Extend(Button)
+function btnWithStyle() {
+  .width('80vp')
+  .height('80vp')
 }
