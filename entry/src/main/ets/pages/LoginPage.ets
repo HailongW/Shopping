@@ -2,6 +2,8 @@
 import router from '@ohos.router';
 import { url } from '@kit.ArkTS';
 
+import promptAction from '@ohos.promptAction';
+
 
 @Entry
 @Component
@@ -50,11 +52,20 @@ struct Login {
           .width('90%')
           .margin({ top: '20vp' })
           .onClick(() => {
-            //路由跳转
-            router.pushUrl({ url: 'pages/MainPage' }).catch((error: Error) => {
-              //错误提示
+            if (this.user == '' || this.password == '') {
+              promptAction.showToast({
+                message: '用户名或密码不能为空',
+                duration: 3000,
+                bottom: '100vp'
+              });
+
+            } else {
+              //路由跳转
+              router.pushUrl({ url: 'pages/MainPage' }).catch((error: Error) => {
+                //错误提示
+              }
+              )
             }
-            )
           })
 
         Row() {

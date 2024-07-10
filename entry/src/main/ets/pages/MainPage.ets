@@ -1,23 +1,45 @@
 import router from '@ohos.router';
+import Home from '../view/HomePage'
+import Choice from '../view/ChoicePage'
+import Mine from '../view/MinePage'
+
+interface TabItem {
+  title: string;
+}
 
 @Entry
 @Component
 struct Main {
+  private controller: TabsController = new TabsController();
+  private items: Array<TabItem> = [
+    { title: '首页' },
+    { title: '精选' },
+    { title: '我的' },
+  ]
+
   build() {
     Row() {
-      Column(){
-        Text('首页')
-        Button('返回登录页', { type: ButtonType.Capsule, stateEffect: true })
-          .width('90%')
-          .margin({ top: '20vp' })
-          .onClick(() => {
-            //路由跳转
-            // router.pushUrl({ url: 'pages/LoginPage' }).catch((error: Error) => {
-            //   //错误提示
-            // }
-            // )
-            router.back()
+      Column() {
+        Tabs({ barPosition: BarPosition.End }) {
+
+          ForEach(this.items, (item: TabItem, index: number) => {
+
+            TabContent() {
+              if (index === 0) {
+                Home()
+              } else if (index === 1) {
+                Choice()
+              } else {
+                Mine()
+              }
+            }
+            .tabBar(item.title)
           })
+        }
+        .barWidth('100%')
+        .barHeight('50vp')
+        .vertical(false)
+        .animationDuration(400)
       }
       .width('100%')
     }
