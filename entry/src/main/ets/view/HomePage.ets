@@ -1,14 +1,14 @@
+import SwiperExample from '../view/components/SwiperExample'
+
 @Component
 export default struct Home {
-  private  message: string = '首页';
+  private message: string = '首页';
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-      }
-      .width('100%')
+    Column() {
+      SwiperExample()
     }
+    .width('100%')
     .height('100%')
   }
 }
